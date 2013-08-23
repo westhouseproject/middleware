@@ -94,4 +94,58 @@ describe('bcpm_helpers', function () {
       });
     });
   });
+  describe('getCleanerData', function () {
+    it('should get the data all cleaned up, and ready for production', function () {
+      var data = {
+            '10': [
+              {
+                Name: 'bcpm_10_kw',
+                Status: '0.12313'
+              },
+              {
+                Name: 'bcpm_10_kwh',
+                Status: '10.23434'
+              }
+            ],
+            '11': [
+              {
+                Name: 'bcpm_11_kw',
+                Status: '1.33'
+              },
+              {
+                Name: 'bcpm_11_kwh',
+                Status: '60.4545'
+              }
+            ],
+            '12': [
+              {
+                Name: 'bcpm_12_kw',
+                Status: '0.5343434'
+              },
+              {
+                Name: 'bcpm_12_kwh',
+                Status: '20.45466'
+              }
+            ]
+          },
+          expected = [
+            {
+              deviceNumber: 10,
+              kW          : 0.12313,
+              kWh         : 10.23434
+            },
+            {
+              deviceNumber: 11,
+              kW          : 1.33,
+              kWh         : 60.4545
+            },
+            {
+              deviceNumber: 12,
+              kW          : 0.5343434,
+              kWh         : 20.45466
+            }
+          ];
+      expect(bcpmHelpers.getCleanerData(data)).to.eql(expected);
+    });
+  });
 });
