@@ -1,0 +1,16 @@
+{
+  "name": "west-house-data",
+  "version": "0.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD",
+  "dependencies": {
+    "mysql": "~2.0.0-alpha8",
+    "request": "~2.27.0",
+    "lodash": "~1.3.1"
+  }
+}
