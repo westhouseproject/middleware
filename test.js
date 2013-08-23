@@ -36,7 +36,7 @@ describe('bcpm_helpers', function () {
       expect(bcpmHelpers.getBcpmData(data)).to.eql(expected);
     });
   });
-  describe('getDeviceData', function () {
+  describe('groupDevices', function () {
     it('should group bcpm by their device number', function () {
       var data = [
             {
@@ -84,7 +84,7 @@ describe('bcpm_helpers', function () {
               }
             ]
           },
-          result = bcpmHelpers.getDeviceData(data);
+          result = bcpmHelpers.groupDevices(data);
 
       _.keys(expected).forEach(function (el) {
         assert(!!result[el]);

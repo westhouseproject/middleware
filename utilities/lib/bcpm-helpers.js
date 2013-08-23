@@ -10,8 +10,7 @@ module.exports.getBcpmData = function (westHouseData) {
   });
 };
 
-// TODO: rename `getDeviceData` to `groupDevices`.
-module.exports.getDeviceData = function (bcpmData) {
+module.exports.groupDevices = function (bcpmData) {
   return _.groupBy(bcpmData, function (el) {
     return el.Name.match(/[0-9]+/)[0];
   });
