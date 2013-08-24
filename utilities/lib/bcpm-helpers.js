@@ -7,7 +7,7 @@ var _ = require('lodash');
 /**
  * Filters out all device readings that don't represent BCPM.
  */
-module.exports.getBcpmData = function (westHouseData) {
+module.exports._getBcpmData = function (westHouseData) {
   return westHouseData.filter(function (el) {
     return (/^bcpm_([0-9]+)_kwh?$/).test(el.Name);
   });
@@ -23,7 +23,7 @@ module.exports.getBcpmData = function (westHouseData) {
  *   the value is an array with two objects: one for the kW readings, and the
  *   other for kWh readings.
  */
-module.exports.groupDevices = function (bcpmData) {
+module.exports._groupDevices = function (bcpmData) {
   return _.groupBy(bcpmData, function (el) {
     return el.Name.match(/[0-9]+/)[0];
   });
@@ -32,7 +32,7 @@ module.exports.groupDevices = function (bcpmData) {
 /**
  * From the grouped devices, clean up the data to be presentable.
  */
-module.exports.getConsumptionData = function (devicesData) {
+module.exports._getConsumptionData = function (devicesData) {
   return _.keys(devicesData).map(function (el) {
     var device = devicesData[el],
         kW     = device.filter(function (el) {

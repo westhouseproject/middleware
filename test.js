@@ -9,7 +9,7 @@ var _           = require('lodash'),
     bcpmHelpers = require('./utilities/lib/bcpm-helpers');
 
 describe('bcpm_helpers', function () {
-  describe('getBcpmData', function () {
+  describe('_getBcpmData', function () {
     it('should only return data that represent BCPM data', function () {
       var data = [
             {
@@ -33,10 +33,10 @@ describe('bcpm_helpers', function () {
               Name: 'bcpm_10_kwh'
             }
           ];
-      expect(bcpmHelpers.getBcpmData(data)).to.eql(expected);
+      expect(bcpmHelpers._getBcpmData(data)).to.eql(expected);
     });
   });
-  describe('groupDevices', function () {
+  describe('_groupDevices', function () {
     it('should group bcpm by their device number', function () {
       var data = [
             {
@@ -84,7 +84,7 @@ describe('bcpm_helpers', function () {
               }
             ]
           },
-          result = bcpmHelpers.groupDevices(data);
+          result = bcpmHelpers._groupDevices(data);
 
       _.keys(expected).forEach(function (el) {
         assert(!!result[el]);
@@ -94,7 +94,7 @@ describe('bcpm_helpers', function () {
       });
     });
   });
-  describe('getConsumptionData', function () {
+  describe('_getConsumptionData', function () {
     it('should get the data all cleaned up, and ready for production', function () {
       var data = {
             '10': [
@@ -145,7 +145,7 @@ describe('bcpm_helpers', function () {
               kWh         : 20.45466
             }
           ];
-      expect(bcpmHelpers.getConsumptionData(data)).to.eql(expected);
+      expect(bcpmHelpers._getConsumptionData(data)).to.eql(expected);
     });
   });
 });
