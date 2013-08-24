@@ -50,3 +50,10 @@ module.exports._getConsumptionData = function (devicesData) {
     return a.deviceNumber - b.deviceNumber;
   });
 };
+
+module.exports.getConsumptionData = function (mControlData) {
+  var bcpmData, deviceData;
+  bcpmData = module.exports._getBcpmData(mControlData);
+  deviceData = module.exports._groupDevices(bcpmData);
+  return module.exports._getConsumptionData(deviceData);
+};
