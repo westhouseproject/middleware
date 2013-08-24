@@ -94,7 +94,7 @@ describe('bcpm_helpers', function () {
       });
     });
   });
-  describe('getCleanerData', function () {
+  describe('getConsumptionData', function () {
     it('should get the data all cleaned up, and ready for production', function () {
       var data = {
             '10': [
@@ -145,7 +145,7 @@ describe('bcpm_helpers', function () {
               kWh         : 20.45466
             }
           ];
-      expect(bcpmHelpers.getCleanerData(data)).to.eql(expected);
+      expect(bcpmHelpers.getConsumptionData(data)).to.eql(expected);
     });
   });
 });
