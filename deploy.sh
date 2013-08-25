@@ -4,7 +4,7 @@ FOLDER_NAME="`basename $(pwd)`"
 DEST_NAME="west-house-middleware"
 THIS_DIR=`pwd`
 
-rm -rf /tmp/.deploy
+sudo rm -rf /tmp/.deploy
 
 if [ ! -d .deploy/west-house-middleware/.git ]; then
   cd ..
@@ -25,9 +25,11 @@ sudo cp -r $THIS_DIR .
 sudo rm -rf $DEST_NAME/.git
 sudo mv .git /tmp/.deploy/$DEST_NAME
 
+echo "Good."
+
 cd $THIS_DIR
-rm -rf .deploy
-cp -r /tmp/.deploy .
+sudo rm -rf .deploy
+sudo cp -r /tmp/.deploy .
 cd .deploy
 
 git add -A
