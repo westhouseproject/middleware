@@ -2,34 +2,35 @@
 
 FOLDER_NAME="`basename $(pwd)`"
 DEST_NAME="west-house-middleware"
+THIS_DIR=`pwd`
 
-echo "Preparing to clone"
+rm -rf /tmp/.deploy
 
-sudo rm -rf /tmp/$DEST_NAME
-sudo rm -rf /tmp/_$DEST_NAME
+if [ ! -d .deploy/west-house-middleware/.git ]; then
+  cd ..
+  mkdir /tmp/.deploy
+  cd /tmp/.deploy
+  git clone ssh://westhouse@west-house.no-ip.org/~/repositories/$DEST_NAME.git
+  cd $THIS_DIR
+  sudo cp -r /tmp/.deploy .
+fi
 
-cd ..
+sudo mv .deploy /tmp
 
-echo "Copying this source code to temporary directory"
+cd /tmp/.deploy
 
-sudo cp -r `pwd`/$FOLDER_NAME /tmp/$DEST_NAME
-cd /tmp
-
-echo "Downloading remote build"
-
-git clone ssh://westhouse@west-house.no-ip.org/~/repositories/$DEST_NAME.git _$DEST_NAME
-
+sudo mv $DEST_NAME/.git .
+sudo rm -rf $DEST_NAME
+sudo cp -r $THIS_DIR .
 sudo rm -rf $DEST_NAME/.git
-sudo rm -rf $DEST_NAME/.gitignore
-sudo mv _$DEST_NAME/.git $DEST_NAME
+sudo mv .git /tmp/.deploy/$DEST_NAME
 
-cd $DEST_NAME
-
-echo "Commiting changes to the downloaded repo."
+cd $THIS_DIR
+rm -rf .deploy
+cp -r /tmp/.deploy .
+cd .deploy
 
 git add -A
 git commit -am "Update."
-
-echo "Pushing."
 
 git push origin master
