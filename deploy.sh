@@ -20,6 +20,7 @@ echo "Downloading remote build"
 git clone ssh://westhouse@west-house.no-ip.org/~/repositories/$DEST_NAME.git _$DEST_NAME
 
 sudo rm -rf $DEST_NAME/.git
+sudo rm -rf $DEST_NAME/.gitignore
 sudo mv _$DEST_NAME/.git $DEST_NAME
 
 cd $DEST_NAME
