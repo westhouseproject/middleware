@@ -21,7 +21,10 @@ app.get('/devices', function (req, res) {
   });
 });
 
+// TODO: deprecate `/consumptions` in favour of `/energy-consumptions`
 app.get('/consumptions', function (req, res) {
+
+  // TODO: have the function also return device information.
   utils.downloadMControlData(function (err, body) {
     var devices, consumptions;
     if (err) return res.json(500, { error: err.message });
@@ -33,6 +36,7 @@ app.get('/consumptions', function (req, res) {
     }
     res.json(consumptions);
   });
+
 });
 
 app.listen(3000);

@@ -14,6 +14,7 @@ if [ ! -d .deploy/$DEST_NAME/.git ]; then
   mkdir /tmp/.deploy
   cd /tmp/.deploy
   echo "Cloning the remote repository into /tmp/.deploy/$DEST_NAME"
+  # TODO: This URL should be in a settings file.
   git clone ssh://westhouse@west-house.no-ip.org/~/repositories/$DEST_NAME.git
   cd $THIS_DIR
   echo "Moving the cloned folder to ./.deploy"
