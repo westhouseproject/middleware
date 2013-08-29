@@ -1,3 +1,7 @@
+# middleware
+
+This is the module that will present a nice JSON interface to data retrieved form mControl.
+
 You will need:
 
 - a POSIX shell (OS X, Linux, any other Unix derivatives, Cygwin, any other POSIX emulators for Windows, etc.)
@@ -16,9 +20,11 @@ $ npm install
 
 Then create a settings file, which should look something like:
 
+```
 {
   "mControlHost": "example.com"
 }
+```
 
 Where:
 
