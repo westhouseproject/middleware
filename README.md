@@ -36,4 +36,4 @@ $ npm start
 
 ## Deployment
 
-Be sure that you have the settings set. Afterwards, run deploy.sh, and it should be good to go from there.
+Be sure that you have the settings set. Afterwards, run `deploy.sh`, and it should be good to go from there.
