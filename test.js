@@ -37,54 +37,8 @@ describe('utils', function () {
     });
   });
   describe('_groupDevices', function () {
-    it('should group bcpm by their device number', function () {
-      var data = [
-            {
-              Name: 'bcpm_10_kw'
-            },
-            {
-              Name: 'bcpm_11_kwh'
-            },
-            {
-              Name: 'bcpm_10_kwh'
-            },
-            {
-              Name: 'bcpm_11_kw'
-            },
-            {
-              Name: 'bcpm_12_kwh'
-            },
-            {
-              Name: 'bcpm_12_kw'
-            }
-          ],
-          expected = {
-            '10': [
-              {
-                Name: 'bcpm_10_kw'
-              },
-              {
-                Name: 'bcpm_10_kwh'
-              }
-            ],
-            '11': [
-              {
-                Name: 'bcpm_11_kw'
-              },
-              {
-                Name: 'bcpm_11_kwh'
-              }
-            ],
-            '12': [
-              {
-                Name: 'bcpm_12_kw'
-              },
-              {
-                Name: 'bcpm_12_kwh'
-              }
-            ]
-          },
-          result = utils._groupDevices(data);
+    function assertGroups(expected, result) {
+      expect(Object.keys(result).length).to.be(Object.keys(expected).length);
 
       _.keys(expected).forEach(function (el) {
         assert(!!result[el]);
@@ -92,60 +46,202 @@ describe('utils', function () {
           return a.Name > b.Name ? 1 : (a.Name < b.Name ? -1 : 0);
         })).to.eql(expected[el]);
       });
+    }
+
+    it('should group bcpm by their device number', function () {
+      var data = [
+        {
+          Name: 'bcpm_10_kw'
+        },
+        {
+          Name: 'bcpm_11_kwh'
+        },
+        {
+          Name: 'bcpm_10_kwh'
+        },
+        {
+          Name: 'bcpm_11_kw'
+        },
+        {
+          Name: 'bcpm_12_kwh'
+        },
+        {
+          Name: 'bcpm_12_kw'
+        }
+      ];
+      var expected = {
+        '10': [
+          {
+            Name: 'bcpm_10_kw'
+          },
+          {
+            Name: 'bcpm_10_kwh'
+          }
+        ],
+        '11': [
+          {
+            Name: 'bcpm_11_kw'
+          },
+          {
+            Name: 'bcpm_11_kwh'
+          }
+        ],
+        '12': [
+          {
+            Name: 'bcpm_12_kw'
+          },
+          {
+            Name: 'bcpm_12_kwh'
+          }
+        ]
+      };
+      var result = utils._groupDevices(data);
+      assertGroups(expected, result);
+    });
+    
+    it('should reject all that have an invalid pairing in them', function () {
+      var data = [
+        {
+          Name: 'bcpm_9_kw'
+        },
+        {
+          Name: 'bcpm_9_kw'
+        },
+        {
+          Name: 'bcpm_9_kwh'
+        },
+        {
+          Name: 'bcpm_10_kw'
+        },
+        {
+          Name: 'bcpm_11_kwh'
+        },
+        {
+          Name: 'bcpm_10_kwh'
+        },
+        {
+          Name: 'bcpm_11_kw'
+        },
+        {
+          Name: 'bcpm_12_kwh'
+        },
+        {
+          Name: 'bcpm_12_kw'
+        },
+        {
+          Name: 'bcpm_13_kw'
+        },
+        {
+          Name: 'bcpm_13_kwh'
+        },
+        {
+          Name: 'bcpm_14_kw'
+        },
+        {
+          Name: 'bcpm_15_kwh'
+        },
+        {
+          Name: 'bcpm_15_kwh'
+        },
+        {
+          Name: 'bcpm_16_kw'
+        },
+        {
+          Name: 'bcpm_16_kw'
+        }
+      ];
+      var expected = {
+        '10': [
+          {
+            Name: 'bcpm_10_kw'
+          },
+          {
+            Name: 'bcpm_10_kwh'
+          }
+        ],
+        '11': [
+          {
+            Name: 'bcpm_11_kw'
+          },
+          {
+            Name: 'bcpm_11_kwh'
+          }
+        ],
+        '12': [
+          {
+            Name: 'bcpm_12_kw'
+          },
+          {
+            Name: 'bcpm_12_kwh'
+          }
+        ],
+        '13': [
+          {
+            Name: 'bcpm_13_kw'
+          },
+          {
+            Name: 'bcpm_13_kwh'
+          }
+        ]
+      };
+      var result = utils._groupDevices(data);
+      assertGroups(expected, result);
     });
   });
   describe('_getConsumptionData', function () {
     it('should get the data all cleaned up, and ready for production', function () {
       var data = {
-            '10': [
-              {
-                Name: 'bcpm_10_kw',
-                Status: '0.12313'
-              },
-              {
-                Name: 'bcpm_10_kwh',
-                Status: '10.23434'
-              }
-            ],
-            '11': [
-              {
-                Name: 'bcpm_11_kw',
-                Status: '1.33'
-              },
-              {
-                Name: 'bcpm_11_kwh',
-                Status: '60.4545'
-              }
-            ],
-            '12': [
-              {
-                Name: 'bcpm_12_kw',
-                Status: '0.5343434'
-              },
-              {
-                Name: 'bcpm_12_kwh',
-                Status: '20.45466'
-              }
-            ]
+        '10': [
+          {
+            Name: 'bcpm_10_kw',
+            Status: '0.12313'
           },
-          expected = [
-            {
-              deviceNumber: 10,
-              kW          : 0.12313,
-              kWh         : 10.23434
-            },
-            {
-              deviceNumber: 11,
-              kW          : 1.33,
-              kWh         : 60.4545
-            },
-            {
-              deviceNumber: 12,
-              kW          : 0.5343434,
-              kWh         : 20.45466
-            }
-          ];
+          {
+            Name: 'bcpm_10_kwh',
+            Status: '10.23434'
+          }
+        ],
+        '11': [
+          {
+            Name: 'bcpm_11_kw',
+            Status: '1.33'
+          },
+          {
+            Name: 'bcpm_11_kwh',
+            Status: '60.4545'
+          }
+        ],
+        '12': [
+          {
+            Name: 'bcpm_12_kw',
+            Status: '0.5343434'
+          },
+          {
+            Name: 'bcpm_12_kwh',
+            Status: '20.45466'
+          }
+        ]
+      };
+      var expected = [
+        {
+          deviceNumber: 10,
+          kW          : 0.12313,
+          kWh         : 10.23434
+        },
+        {
+          deviceNumber: 11,
+          kW          : 1.33,
+          kWh         : 60.4545
+        },
+        {
+          deviceNumber: 12,
+          kW          : 0.5343434,
+          kWh         : 20.45466
+        }
+      ];
       expect(utils._getConsumptionData(data)).to.eql(expected);
+    });
+    it('should reject those that have duplicates', function () {
     });
   });
   describe('getConsumptionData', function () {
