@@ -9,7 +9,7 @@ var app = express();
 
 console.log(settings);
 
-app.use(express.bodyParser());
+app.use(express.json());
 app.use(express.methodOverride());
 
 // TODO: require authentication. Use a middleware for that.

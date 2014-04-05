@@ -4,7 +4,6 @@ This is the module that will present a nice JSON interface to data retrieved for
 
 You will need:
 
-- a POSIX shell (OS X, Linux, any other Unix derivatives, Cygwin, any other POSIX emulators for Windows, etc.)
 - Git
 - Node.js
 
