@@ -17,11 +17,14 @@ app.use(function (req, res, next) {
 });
 app.use(express.json());
 app.use(express.methodOverride());
+app.set('view engine', 'jade')
 
 // TODO: require authentication. Use a middleware for that.
 
 app.get('/', function (req, res) {
-  res.redirect('/devices');
+  //console.log(app.routes);
+  res.render('index', { routes: app.routes });
+  // res.redirect('/devices');
 });
 
 app.get('/devices', function (req, res) {
@@ -75,6 +78,7 @@ app.get('/consumptions', function (req, res) {
     );
 
   }
+  
 });
 
 function sendComingSoon(res) {
