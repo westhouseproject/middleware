@@ -8,6 +8,8 @@ var helpers = require('./lib/helpers');
 var settings = require('./settings');
 var influx = require('influx');
 var util = require('util');
+var _ = require('lodash');
+
 var app = express();
 
 var client = influx(
@@ -65,22 +67,34 @@ app.get('/data', function (req, res, next) {
 
   var now = new Date();
 
-  var type = req.body.type || 'energy_consumption';
-  var granularity = req.body.granularity || '5m';
-  var funct = req.body.funct || 'mean';
+  var type = req.query.type || 'energy_consumption';
+  var granularity = req.query.granularity || '5m';
+  var funct = req.query.funct || 'mean';
   var earliest =
-    (req.body.earliest && parseInt(req.body.earliest), 10) ||
-    now.getTime() - 1000 * 60 * 60 * 6;
+    (req.query.earliest && parseInt(req.query.earliest, 10)) ||
+    Math.floor((now.getTime() - 1000 * 60 * 60 * 6) / 1000);
   var latest =
-    (req.body.latest && parseInt(req.body.latest), 10) ||
-    now.getTime();
-  var devices = req.body.devices 
+    (req.query.latest && parseInt(req.query.latest, 10)) ||
+    Math.floor(now.getTime() / 1000);
+  var devices;
+
+  if (req.query.devices) {
+    try {
+      var devicesList = JSON.parse(req.query.devices);
+      if (!_.isArray(devicesList)) {
+        throw new Error('Not an array');
+      }
+    } catch (e) {
+      return res.send(401, 'The requested devices list must be a JSON array');
+    }
+  }
 
   // The way the weather is stored is different, and therefore, the way we will
   // compute its data is different.
   if (type === 'weather') {
     return res.send(501, 'Coming soon');
   }
+
 
   if (
     !/^(water_use|gas_consumption|energy_draw|energy_consumption|energy_production)$/
@@ -112,10 +126,13 @@ app.get('/data', function (req, res, next) {
     return res.status(400).send(util.format('Function "%s" not supported', funct));
   }
 
-  client.query(util.format('SELECT %s(value) FROM %s WHERE time > earliest AND time < latest GROUP BY granularity'), function (err, data) {
+  var query = util.format('SELECT %s(value) FROM %s WHERE time > %ss AND time < %ss GROUP BY time(%s)', funct, type, earliest, latest, granularity);
+  console.log(query);
+
+  client.query(query, function (err, data) {
     if (err) { return next(err); }
     console.log(data);
-    res.status(501, 'Coming soon');
+    res.json(data);
   });
 });
 
