@@ -5,7 +5,7 @@
 var express = require('express');
 // TODO: KISS. Why this additional utilties file? I have no clue. Get rid of it.
 var helpers = require('./lib/helpers');
-var settings = require('./lib/settings.js');
+var settings = require('./settings');
 var influx = require('influx');
 var util = require('util');
 var app = express();
@@ -120,8 +120,9 @@ app.get('/data', function (req, res, next) {
 });
 
 app.get('/current', function (req, res, next) {
-  helpers.downloadMControlData(function (err, body) {
-
+  helpers.downloadMControlData(function (err, data) {
+    if (err) { return next(err); }
+    res.json(helpers.getUtilityData(data));
   });
 });
 
@@ -133,5 +134,5 @@ app.get('/rooms', function (req, res) {
   res.send(501, { message: 'Coming soon.' });
 });
 
-app.listen(settings.listenPort);
-console.log('Server listening on port ' + settings.listenPort);
+app.listen(settings.get('port'));
+console.log('Server listening on port ' + settings.get('port'));
