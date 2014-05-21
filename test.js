@@ -6,7 +6,7 @@
 var _           = require('lodash'),
     expect      = require('expect.js'),
     assert      = require('assert'),
-    utils = require('./lib/utils.js');
+    utils = require('./lib/helpers.js');
 
 describe('utils', function () {
   describe('_getBcpmData', function () {
@@ -188,7 +188,7 @@ describe('utils', function () {
       assertGroups(expected, result);
     });
   });
-  describe('_getConsumptionData', function () {
+  describe('_getUtilityData', function () {
     it('should get the data all cleaned up, and ready for production', function () {
       var data = {
         '10': [
@@ -222,29 +222,25 @@ describe('utils', function () {
           }
         ]
       };
-      var expected = [
-        {
-          deviceNumber: 10,
-          kW          : 0.12313,
-          kWh         : 10.23434
-        },
-        {
-          deviceNumber: 11,
-          kW          : 1.33,
-          kWh         : 60.4545
-        },
-        {
-          deviceNumber: 12,
-          kW          : 0.5343434,
-          kWh         : 20.45466
-        }
-      ];
-      expect(utils._getConsumptionData(data)).to.eql(expected);
+      var expected = {
+        energy_consumption: [
+          { id: '10', value: 10.23434 },
+          { id: '11', value: 60.4545 },
+          { id: '12', value: 20.45466 }
+        ],
+        energy_draw: [
+          { id: '10', value: 0.12313 },
+          { id: '11', value: 1.33 },
+          { id: '12', value: 0.5343434 }
+        ],
+        energy_production: []
+      };
+      expect(utils._getUtilityData(data)).to.eql(expected);
     });
     it('should reject those that have duplicates', function () {
     });
   });
-  describe('getConsumptionData', function () {
+  describe('getUtilityData', function () {
     it('it should be able to get the consumption data given an mControl array', function () {
       var data = [
             {
@@ -284,24 +280,20 @@ describe('utils', function () {
               Status: '0.5343434'
             }
           ],
-          expected = [
-            {
-              deviceNumber: 10,
-              kW          : 0.12313,
-              kWh         : 10.23434
-            },
-            {
-              deviceNumber: 11,
-              kW          : 1.33,
-              kWh         : 60.4545
-            },
-            {
-              deviceNumber: 12,
-              kW          : 0.5343434,
-              kWh         : 20.45466
-            }
-          ];
-      expect(utils.getConsumptionData(data)).to.eql(expected);
+          expected = {
+            energy_consumption: [
+              { id: '10', value: 10.23434 },
+              { id: '11', value: 60.4545 },
+              { id: '12', value: 20.45466 }
+            ],
+            energy_draw: [
+              { id: '10', value: 0.12313 },
+              { id: '11', value: 1.33 },
+              { id: '12', value: 0.5343434 }
+            ],
+            energy_production: []
+          };
+      expect(utils.getUtilityData(data)).to.eql(expected);
     });
   });
 });

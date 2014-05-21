@@ -1,0 +1,14 @@
+doctype
+
+html(lang='en')
+  header
+    meta(charset='utf-8')
+    title Middleware
+  body
+    ul
+      - for (var key in routes)
+        - var method = routes[key]
+        h2!= key.toUpperCase()
+        - for (var i = 0; i < method.length; i++)
+          li
+            | #{routes.get[i].path}
