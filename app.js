@@ -152,4 +152,8 @@ app.get('/rooms', function (req, res) {
 });
 
 app.listen(settings.get('port'));
-console.log('Server listening on port ' + settings.get('port'));
+console.log(
+  'Server listening on port %s, in %s mode',
+  settings.get('port'),
+  settings.get('NODE_ENV')
+);
