@@ -34,10 +34,9 @@ app.get('/', function (req, res) {
 });
 
 app.get('/devices', function (req, res) {
-  helpers.getUtilityData(function (err, body) {
+  helpers.downloadMControlData(function (err, body) {
     if (err) return res.json(500, { error: err.message });
-    res.set('Content-Type', 'application/json');
-    res.send(body);
+    res.json(body);
   });
 });
 
