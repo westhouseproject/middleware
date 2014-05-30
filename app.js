@@ -94,7 +94,6 @@ app.get('/data', function (req, res, next) {
     return res.send(501, 'Coming soon');
   }
 
-
   if (
     !/^(water_use|gas_consumption|energy_draw|energy_consumption|energy_production)$/
       .test(type)
