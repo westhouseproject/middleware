@@ -23,7 +23,7 @@ app.set('view engine', 'jade');
 
 app.get('/devices', function (req, res) {
   helpers.downloadMControlData(function (err, body) {
-    if (err) return res.json(500, { error: err.message });
+    if (err) { return next(err); };
     res.json(body);
   });
 });
